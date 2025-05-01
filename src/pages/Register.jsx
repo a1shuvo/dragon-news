@@ -1,34 +1,57 @@
-import React from 'react';
+import React, { use } from 'react';
 import { Link } from 'react-router';
+import { AuthContext } from '../provider/AuthContext';
 
 const Register = () => {
+    const { createUser, setUser } = use(AuthContext);
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+
+        const name = e.target.name.value;
+        const photo = e.target.photo.value;
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+                // console.log(user);
+                setUser(user);
+            })
+            .catch(error => {
+                const errorMsg = error.message;
+                console.log(errorMsg);
+            });
+    }
+
     return (
         <div className="card bg-base-100 mx-auto w-full max-w-sm shadow-2xl p-5">
             <h2 className='font-bold text-2xl text-primary text-center'>Register your account</h2>
             <div className="card-body text-primary">
-                <form className="fieldset">
+                <form onSubmit={handleRegister} className="fieldset">
                     {/* Name */}
                     <label className="font-semibold">Your Name</label>
-                    <input type="text" className="input bg-base-200 border-0" placeholder="Enter your name" />
+                    <input type="text" name='name' className="input bg-base-200 border-0" placeholder="Enter your name" required />
 
                     {/* Photo URL */}
                     <label className="font-semibold">Photo URL</label>
-                    <input type="text" className="input bg-base-200 border-0" placeholder="Enter your photo url" />
+                    <input type="text" name='photo' className="input bg-base-200 border-0" placeholder="Enter your photo url" required />
 
                     {/* Email */}
                     <label className="font-semibold">Email Address</label>
-                    <input type="email" className="input bg-base-200 border-0" placeholder="Enter your email address" />
+                    <input type="email" name='email' className="input bg-base-200 border-0" placeholder="Enter your email address" required />
 
                     {/* Password */}
                     <label className="font-semibold">Password</label>
-                    <input type="password" className="input bg-base-200 border-0" placeholder="Enter your password" />
+                    <input type="password" name='password' className="input bg-base-200 border-0" placeholder="Enter your password" required />
 
                     <label className="label mt-3">
                         <input type="checkbox" className="checkbox" />
                         Accept <Link className='font-semibold' to={'#'}>Term & Conditions</Link>
                     </label>
 
-                    <button className="btn btn-primary mt-4">Register</button>
+                    <button type='submit' className="btn btn-primary mt-4">Register</button>
                 </form>
                 <p className='text-center font-semibold mt-3'>Have An Account? Please <Link className='text-secondary' to={'/auth/login'}>Login</Link></p>
             </div>
