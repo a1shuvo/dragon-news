@@ -1,8 +1,10 @@
 import { FaEye, FaStar } from "react-icons/fa";
 import { MdShare, MdBookmarkBorder } from "react-icons/md";
+import { Link } from "react-router";
 
 const NewsCard = ({ news }) => {
     const {
+        id,
         title,
         rating,
         total_view,
@@ -44,9 +46,9 @@ const NewsCard = ({ news }) => {
 
             {/* Title */}
             <div className="px-4 pt-4">
-                <a href="#" className="font-bold text-lg hover:underline">
+                <Link to={`/news-details/${id}`} className="font-bold text-lg hover:underline">
                     {title}
-                </a>
+                </Link>
             </div>
 
             {/* Thumbnail */}
@@ -70,9 +72,9 @@ const NewsCard = ({ news }) => {
 
             {/* Read More */}
             <div className="px-4 pt-2">
-                <a href="#" className="text-secondary font-semibold hover:underline">
+                <Link to={`/news-details/${id}`} className="text-secondary font-semibold hover:underline">
                     Read More
-                </a>
+                </Link>
             </div>
 
             {/* Footer: Rating & Views */}
