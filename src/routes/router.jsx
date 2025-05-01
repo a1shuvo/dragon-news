@@ -7,7 +7,7 @@ const router = createBrowserRouter(
     [
         {
             path: '/',
-            element:<HomeLayout></HomeLayout>,
+            element: <HomeLayout></HomeLayout>,
             children: [
                 {
                     path: '/',
@@ -15,21 +15,23 @@ const router = createBrowserRouter(
                 },
                 {
                     path: '/category/:id',
-                    element: <CategoryNews></CategoryNews>
+                    element: <CategoryNews></CategoryNews>,
+                    hydrateFallbackElement: 'Loading...',
+                    loader: () => fetch('/news.json')
                 }
             ]
         },
         {
             path: '/auth',
-            element:<h2>Authetication Layout</h2>
+            element: <h2>Authetication Layout</h2>
         },
         {
             path: '/News',
-            element:<h2>News Layout</h2>
+            element: <h2>News Layout</h2>
         },
         {
             path: '/*',
-            element:<h2>Error - 404</h2>
+            element: <h2>Error - 404</h2>
         },
     ]
 )
