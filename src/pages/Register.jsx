@@ -1,11 +1,12 @@
 import React, { use, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../provider/AuthContext';
 
 const Register = () => {
-    const { createUser, setUser } = use(AuthContext);
+    const { createUser, setUser, updateUser } = use(AuthContext);
     const [nameError, setNameError] = useState('');
-    const [photoError, setPhotoError] = useState('');
+
+    const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -21,21 +22,22 @@ const Register = () => {
         } else {
             setNameError('');
         }
-        if (photo.length < 1) {
-            setPhotoError('You should input an photo url!');
-            return;
-        } else {
-            setPhotoError('');
-        }
 
         createUser(email, password)
             .then(result => {
                 const user = result.user;
-                setUser(user);
+                updateUser({displayName: name, photoURL: photo})
+                .then(()=>{
+                    setUser({...user, displayName: name, photoURL: photo});
+                    navigate('/');
+                })
+                .catch(()=>{
+                    // console.log(error);
+                })
             })
-            .catch(error => {
-                const errorMsg = error.message;
-                console.log(errorMsg);
+            .catch(() => {
+                // const errorMsg = error.message;
+                // console.log(errorMsg);
             });
     }
 
@@ -52,7 +54,6 @@ const Register = () => {
                     {/* Photo URL */}
                     <label className="font-semibold">Photo URL</label>
                     <input type="text" name='photo' className="input bg-base-200 border-0" placeholder="Enter your photo url" required />
-                    {photoError && <p className='text-red-500'>{photoError}</p>}
 
                     {/* Email */}
                     <label className="font-semibold">Email Address</label>

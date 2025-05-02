@@ -9,10 +9,10 @@ const Navbar = () => {
     const handleLogout = () => {
         userSignOut()
             .then(() => {
-                console.log('Signout Successful!');
+                // console.log('Signout Successful!');
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                // console.log(error);
             });
 
     }
@@ -26,7 +26,7 @@ const Navbar = () => {
                 <NavLink to={'/career'}>Career</NavLink>
             </div>
             <div className='login-btn flex gap-5'>
-                <img src={userIcon} alt="user" />
+                <img className='w-10 rounded-full' src={user?.photoURL ? user?.photoURL : userIcon} alt="user" />
                 {user ?
                     (<button onClick={handleLogout} className='btn btn-primary px-10'>Logout</button>) :
                     (<Link to={'/auth/login'} className='btn btn-primary px-10'>Login</Link>)
