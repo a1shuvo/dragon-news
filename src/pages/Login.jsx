@@ -1,9 +1,13 @@
 import React, { use } from 'react';
-import { Link } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import { AuthContext } from '../provider/AuthContext';
 
 const Login = () => {
-    const { userSignIn } = use(AuthContext);
+    const { userSignIn, user } = use(AuthContext);
+
+    if (user && user?.email) {
+        return <Navigate to={'/'}></Navigate>
+    }
 
     const handleLogin = (e) => {
         e.preventDefault();
