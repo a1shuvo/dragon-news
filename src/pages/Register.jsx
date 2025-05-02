@@ -1,9 +1,11 @@
-import React, { use } from 'react';
+import React, { use, useState } from 'react';
 import { Link } from 'react-router';
 import { AuthContext } from '../provider/AuthContext';
 
 const Register = () => {
     const { createUser, setUser } = use(AuthContext);
+    const [nameError, setNameError] = useState('');
+    const [photoError, setPhotoError] = useState('');
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -13,12 +15,22 @@ const Register = () => {
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-        console.log(name, photo, email, password);
+        if (name.length < 5) {
+            setNameError('Name should be more than 5 character!');
+            return;
+        } else {
+            setNameError('');
+        }
+        if (photo.length < 1) {
+            setPhotoError('You should input an photo url!');
+            return;
+        } else {
+            setPhotoError('');
+        }
 
         createUser(email, password)
             .then(result => {
                 const user = result.user;
-                // console.log(user);
                 setUser(user);
             })
             .catch(error => {
@@ -35,10 +47,12 @@ const Register = () => {
                     {/* Name */}
                     <label className="font-semibold">Your Name</label>
                     <input type="text" name='name' className="input bg-base-200 border-0" placeholder="Enter your name" required />
+                    {nameError && <p className='text-red-500'>{nameError}</p>}
 
                     {/* Photo URL */}
                     <label className="font-semibold">Photo URL</label>
                     <input type="text" name='photo' className="input bg-base-200 border-0" placeholder="Enter your photo url" required />
+                    {photoError && <p className='text-red-500'>{photoError}</p>}
 
                     {/* Email */}
                     <label className="font-semibold">Email Address</label>
